@@ -9,7 +9,7 @@ namespace Arma3Launcher.Model.LauncherConfig
     {
         [XmlAttribute]
         public string ModpackID;
-
+        [XmlText]
         public string Path;
     }
 }
