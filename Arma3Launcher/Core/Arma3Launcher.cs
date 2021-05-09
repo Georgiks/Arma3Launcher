@@ -5,6 +5,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,9 +23,35 @@ namespace Arma3Launcher.Core
         private Config CurrentConfig;
         private Printer Printer;
 
-        public Arma3Launcher(Printer printer)
+        public Arma3Launcher([DisallowNull] Printer printer)
         {
             Printer = printer;
+        }
+
+        public void PrintRepositoryInfo(Repository repository)
+        {
+            string prefix = "> ";
+            Printer.PrintLine(prefix + "Repository:");
+            Printer.PrintLine(prefix + $"  Addons count: {repository.Addons?.Length}");
+            Printer.PrintLine(prefix + $"  Modpacks count: {repository.Modpacks?.Length}");
+            for (int i = 0; i < repository.Modpacks?.Length; i++)
+            {
+                Printer.PrintLine($">   {i}:");
+                PrintModpackInfo(repository.Modpacks[i]);
+            }
+            Printer.PrintLine("");
+        }
+
+        void PrintModpackInfo(Modpack modpack)
+        {
+            string prefix = ">     ";
+            Printer.PrintLine(prefix + $"Modpack '{modpack.Name}'");
+            Printer.PrintLine(prefix + $"ID: {modpack.ID}");
+            Printer.PrintLine(prefix + $"Addons count: {modpack.Addons?.Length}");
+            Printer.PrintLine(prefix + $"Source: {modpack.Source}");
+            Printer.PrintLine(prefix + $"  Server IP: {modpack.IP}");
+            Printer.PrintLine(prefix + $"  Server port: {modpack.Port}");
+            Printer.PrintLine(prefix + $"  Server password: {modpack.Password}");
         }
 
         void LoadConfiguration()

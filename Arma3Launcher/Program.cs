@@ -26,6 +26,7 @@ namespace Arma3Launcher.Core
 
             Repository repository = launcher.GetRepositoryAsync().GetAwaiter().GetResult();
 
+            launcher.PrintRepositoryInfo(repository);
             // select modpack
             if (repository.Modpacks.Length == 0)
             {
@@ -59,8 +60,15 @@ namespace Arma3Launcher.Core
             // synchronize modpack
             launcher.Synchronize(repository, modpack);
 
-            // launch arma
-            launcher.StartArmaWithModpack(modpack);
+            if (!args.Contains("nolaunch"))
+            {
+                // launch arma
+                launcher.StartArmaWithModpack(modpack);
+            } else
+            {
+                printer.PrintLine("Not launching...");
+                Thread.Sleep(5000);
+            }
         }
     }
 }
