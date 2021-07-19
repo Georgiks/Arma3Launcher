@@ -10,13 +10,14 @@ namespace Arma3Launcher.Core
     {
         public bool Equals([AllowNull] FileSystemInfo x, [AllowNull] FileSystemInfo y)
         {
-            return EqualityComparer<string>.Default.Equals(x.FullName, y.FullName);
+            //return EqualityComparer<string>.Default.Equals(x.FullName, y.FullName);
+            return StringComparer.InvariantCultureIgnoreCase.Equals(x.FullName, y.FullName);
         }
 
         public int GetHashCode([DisallowNull] FileSystemInfo obj)
         {
-            return EqualityComparer<string>.Default.GetHashCode(obj.FullName);
-
+            //return EqualityComparer<string>.Default.GetHashCode(obj.FullName);
+            return StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.FullName);
         }
     }
 }
