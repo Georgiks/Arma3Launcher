@@ -19,7 +19,7 @@ namespace Arma3Launcher.Core
 
         public ConcurrentAddonDownloader(Printer printer, int maxConcurrency = 5)
         {
-            Semaphore = new SemaphoreSlim(5);
+            Semaphore = new SemaphoreSlim(maxConcurrency);
             Printer = printer;
         }
 
