@@ -56,14 +56,23 @@ namespace Arma3Launcher.Core
                 modpack = repository.Modpacks[0];
             }
 
-
-            // synchronize modpack
-            launcher.Synchronize(repository, modpack);
+            if (!args.Contains("nosync"))
+            {
+                // synchronize modpack
+                launcher.Synchronize(repository, modpack);
+            }
 
             if (!args.Contains("nolaunch"))
             {
+                List<string> optionals = new List<string>();
                 // launch arma
-                launcher.StartArmaWithModpack(modpack);
+                foreach (var c in args.Where(a => a.StartsWith("addon=")))
+                {
+                    var addons = c.Substring(c.IndexOf('=') + 1).Split(';', StringSplitOptions.RemoveEmptyEntries);
+                    optionals.AddRange(addons);
+                }
+
+                launcher.StartArmaWithModpack(modpack, optionals.ToArray());
             } else
             {
                 printer.PrintLine("Not launching...");

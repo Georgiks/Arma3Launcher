@@ -111,7 +111,7 @@ namespace Arma3Launcher.Core
             synchronizer.Synchronize();
         }
 
-        public void StartArmaWithModpack(Modpack modpack)
+        public void StartArmaWithModpack(Modpack modpack, string[] optionalAddons = null)
         {
             if (CurrentConfig == null)
             {
@@ -130,11 +130,11 @@ namespace Arma3Launcher.Core
                 SaveConfiguration();
             }
 
-            string parameters = CreateStartupParameters(modpack);
+            string parameters = CreateStartupParameters(modpack, optionalAddons);
             Process.Start(new ProcessStartInfo(CurrentConfig.Arma3Executable, parameters));
         }
 
-        string CreateStartupParameters(Modpack modpack)
+        string CreateStartupParameters(Modpack modpack, string[] optionalAddons = null)
         {
             DirectoryInfo modpackDirectory = CurrentConfig.GetModpackDirectory(modpack.ID);
             if (modpackDirectory == null || string.IsNullOrWhiteSpace(modpackDirectory.FullName))
@@ -147,7 +147,8 @@ namespace Arma3Launcher.Core
             sb.Append("-connect=").Append(modpack.IP).Append(" ");
             sb.Append("-port=").Append(modpack.Port).Append(" ");
             sb.Append("-password=").Append(modpack.Password).Append(" ");
-            string mods = string.Join(';', modpack.Addons.Select(a => $"\"{Path.Combine(modpackDirectory.FullName, a)}\""));
+            var addons = modpack.Addons.Select(a => $"\"{Path.Combine(modpackDirectory.FullName, a)}\"");
+            string mods = string.Join(';', addons.Concat(optionalAddons ?? Enumerable.Empty<string>()));
             sb.Append("-mod=").Append(mods);
             return sb.ToString();
         }
