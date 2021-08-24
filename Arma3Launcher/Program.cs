@@ -68,7 +68,7 @@ namespace Arma3Launcher.Core
                 // launch arma
                 foreach (var c in args.Where(a => a.StartsWith("addon=")))
                 {
-                    var addons = c.Substring(c.IndexOf('=') + 1).Split(';', StringSplitOptions.RemoveEmptyEntries);
+                    var addons = c.Substring(c.IndexOf('=') + 1).Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                     optionals.AddRange(addons);
                 }
 

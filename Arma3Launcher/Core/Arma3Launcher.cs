@@ -23,7 +23,7 @@ namespace Arma3Launcher.Core
         private Config CurrentConfig;
         private Printer Printer;
 
-        public Arma3Launcher([DisallowNull] Printer printer)
+        public Arma3Launcher(Printer printer)
         {
             Printer = printer;
         }
@@ -148,7 +148,7 @@ namespace Arma3Launcher.Core
             sb.Append("-port=").Append(modpack.Port).Append(" ");
             sb.Append("-password=").Append(modpack.Password).Append(" ");
             var addons = modpack.Addons.Select(a => $"\"{Path.Combine(modpackDirectory.FullName, a)}\"");
-            string mods = string.Join(';', addons.Concat(optionalAddons ?? Enumerable.Empty<string>()));
+            string mods = string.Join(";", addons.Concat(optionalAddons ?? Enumerable.Empty<string>()));
             sb.Append("-mod=").Append(mods);
             return sb.ToString();
         }
